@@ -1,0 +1,523 @@
+---
+sidebar_label: deBloating
+sidebar_position: 4
+description: Removing crap apps and reducing telemetry
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+
+# deBloating
+
+## What does it mean?
+
+> *To remove unnecessary applications from our devices. Throughout the years, Windows computers and Android phones have been known to include additional applications that are not needed by most people and just waste storage.*
+>
+> — [PCMag Encyclopedia, *Debloat*](https://www.pcmag.com/encyclopedia/term/debloat)
+
+Android TV OS will not let you uninstall a lot of junk you don't even want in the first place, like Google Play Games.
+Therefore, we'll need to access the OS through ADB from our desktop machine, ADB has the same concept of *ssh*, it's made to access the os from the terminal of another machine.
+
+---
+
+## Install ADB on your desktop
+
+In order to do changes to the device and for you not to having to tackle with a crappy remote, we can use **ADB** (*Android Debug Bridge*).
+
+We're going to use our Terminal, to install ADB.
+
+
+<Tabs className="unique-tabs">
+
+<TabItem value="Homebrew">
+## Install using Homebrew
+This method is recommended if you:
+- Want the simplest installation process
+- Already have Homebrew installed
+- Prefer package management for easy updates
+
+### Installation Steps
+
+#### 1. Install Homebrew
+If you haven't already, install Homebrew:
+```js
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+#### 2. Install ADB
+Install Android Platform Tools using Homebrew:
+```js
+brew install android-platform-tools
+```
+
+#### 3. Verify Installation
+Verify that `adb` is correctly installed:
+```js
+adb version
+```
+</TabItem>
+
+<TabItem value="Manual Install (macOS)">
+## Manual Install for macOS
+
+This method is recommended if you:
+- Don't need Homebrew installed on your machine
+- Have limited storage space
+- Prefer direct control over the installation process
+
+### Installation Steps   
+
+#### 1. Download "**Platform Tools**" from Google's official website
+Download the one for your pc OS.
+[**Download Platform Tools**](https://developer.android.com/studio#downloads)
+
+#### 2. Unzipping
+Unzip the download and place it where you want to. I placed mine in the Applications folder.
+
+#### 3. Copy the pathname
+Go to the folder and press *alt* to copy the pathname of the folder.
+<img src="/img/copy-pathname.png" alt="Explicative screenshot" style={{borderRadius: '10px'}} />
+    
+You should get something like this copied in your clipboard.
+    ```
+    '/Applications/platform-tools'
+    ```
+#### 4. Add the folder/ADB to your os PATH.
+Open the Terminal and run:
+    ```js
+    nano ~/.zshrc
+    ```
+Insert the following line:
+    ```js
+    export PATH=$PATH:/Applications/platform-tools
+    ```
+To save `Ctrl + 0`, confirm with `Enter` then press `Ctrl + X` to exit.
+    
+#### 5. Add the folder/ADB to your os PATH.
+Verify that `adb` is correctly installed:
+     ```js
+    adb version
+    ```
+  </TabItem>
+
+<TabItem value="Manual Install (Windows)">
+## Manual Install for Windows
+
+This method is recommended if you:
+- Don't need Homebrew installed on your machine
+- Have limited storage space
+- Prefer direct control over the installation process
+
+### Installation Steps   
+
+#### 1. Download "**Platform Tools**" from Google's official website
+Download the one for your pc OS.
+[**Download Platform Tools**](https://developer.android.com/studio#downloads)
+
+#### 2. Unzipping
+Unzip the download and place it where you want to. I placed mine in the Applications folder.
+    
+#### 5. Add the folder/ADB to your os PATH.
+Verify that `adb` is correctly installed
+
+     ```js
+    adb version
+    ```
+  </TabItem>
+</Tabs>
+
+---
+
+## Accessing Android TV from desktop using ADB
+To access your Android TV from your computer we're going to need to do a few things.
+*[include aside video showing how]*
+
+#### 1. Enable Developer Options
+
+1. Go to **Settings** > **Device Preferences** > **About** on your Android TV.
+2. Go to **Build Number** (at the bottom) and click it **7 times** until you see the message: *"You are now a developer!"*
+3. Go back to **Settings** > **Device Preferences**, and you'll see **Developer Options**.
+
+#### 2. Enable USB or Network Debugging
+
+1. Go to **Settings** > **Device Preferences** > **Developer Options**.
+2. Enable **USB Debugging** or **Network Debugging** (if connecting wirelessly).
+
+#### 3. Find the IP Address (For Wireless Debugging)
+
+1. Go to **Settings** > **Network & Internet**.
+2. Select your active Wi-Fi network and note down the **IP address** of your Android TV.
+
+#### 4. Connect from Terminal
+1. Open a terminal and type:
+
+     ```js
+    adb connect <ANDROID_TVs_IP_ADDRESS>
+    ```
+2.  To verify you're connected use:
+
+    ```js
+    adb devices
+    ```
+
+---
+
+## Install a different launcher
+As most AndroidTV OSs use Google TVs launcher, that is essentially filled with ads and has a poor UI.
+(screenshot esempio)
+
+To change launcher you have a few choices. I will explain the detailed installation process for FLauncher, but the other are ____ as well.
+
+- FLauncher ![Recommended](https://img.shields.io/badge/Recommended-8A2BE2)
+- Projectivity
+- Dispatch
+- Wolf ![Not Recommended](https://img.shields.io/badge/Not_recommended-D25C46)
+
+<Tabs className="unique-tabs">
+
+<TabItem value="FLauncher">
+## FLauncher
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+This launcher is recommended if you:
+- Want something easy and simple  
+- Have a nice grid display of your applications
+- The only launcher you can download from its source's repository without having to go through Google Play Store
+
+At the moment, FLauncher is the only one, in this guide, to have a detailed installation guide step-by-step.
+
+### Downloads
+
+[**Download from GitLab**](https://gitlab.com/flauncher/flauncher)<sup>1</sup> | [**Download from Google Play Store**](https://play.google.com/store/apps/details?id=me.efesser.flauncher) 
+
+<span style={{ fontSize: '0.70em', fontStyle: 'italic' }}>1 | Install the latest release and choose the right architecture. If you are unsure about the architecture of your OS, [learn more](#).</span>
+
+### Screenshots
+
+<img src="/img/screenshot-flauncher.png" alt="FLauncher Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+
+### Installation Steps
+
+#### 1. Install the APK
+Body or from Github and install it via Terminal with the code:
+```js
+adb install <pathway_on_desktop>
+```
+
+#### 2. Launch the application
+Body
+
+#### 3. Configure and costumize the UI 
+Body
+
+</div>
+
+<img src="/img/flauncher.png" alt="FLauncher Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+</TabItem>
+
+<TabItem value="Projectivy">
+## Projectivy
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+This launcher is recommended if you:
+- Want more interactiveness between applications and the launcher's UI
+- Have more time to set it up
+
+### Download
+
+[**Download from Google Play Store**](https://play.google.com/store/apps/details?id=com.spocky.projengmenu&hl=en)
+
+### Screenshots
+
+<img src="/img/screenshot-projectivy.jpg" alt="Projectivy Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+</div>
+
+<img src="/img/projectivy.png" alt="Projectivy Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+</TabItem>
+
+<TabItem value="Dispatch">
+## Dispatch
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+This launcher is recommended if you:
+- Want more interactiveness between applications and the launcher's UI
+- Have more time to set it up
+
+### Download
+
+[**Download from Google Play Store**](https://play.google.com/store/apps/details?id=com.spauldhaliwal.dispatch&hl=en)
+
+### Screenshots
+
+<img src="/img/screenshot-dispatch.jpg" alt="Dispatch Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+</div>
+
+<img src="/img/dispatch.png" alt="Dispatch Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+</TabItem>
+
+<TabItem value="Wolf">
+## Wolf
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+This launcher is **not** recommended. 
+
+It's born as a modded version of paid ATV Launcher. There is no official download but just random APKs wondering from *questionable* websites on the web. As the alternatives are already more than suffitient, I advice **against** the installation of Wolf.
+</div>
+
+<img src="/img/wolf.png" alt="Wolf Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+</TabItem>
+</Tabs>
+
+---
+
+## Disable default stock launcher
+Once you have installed the new launcher, you can disable the default stock launcher. This is reccomended as it's the best way to have the OS booting on the new launcher rather than the stock one. This can always be reversed.
+```js
+$ adb shell pm disable-user --user 0 com.google.android.apps.tv.launcherx
+$ adb shell pm disable-user --user 0 com.google.android.tungsten.setupwraith
+```
+To reverse it use
+```js
+$ adb shell pm enable com.google.android.apps.tv.launcherx
+$ adb shell pm enable com.google.android.tungsten.setupwraith
+```
+---
+
+## Uninstall bloated applications
+:::danger[Note well]
+Always check that all of the list of applications listed below are all things you don't care about, they are safe to remove it but remove them if you have no interest in using. Tip: most of them, no one needs.
+:::
+
+    ```js
+    adb shell pm uninstall -k --user 0 com.android.gallery3d
+    adb shell pm uninstall -k --user 0 com.android.dreams.basic
+    adb shell pm uninstall -k --user 0 com.android.printspooler
+    adb shell pm uninstall -k --user 0 com.android.feedback
+    adb shell pm uninstall -k --user 0 com.android.keychain
+    adb shell pm uninstall -k --user 0 com.android.cts.priv.ctsshim
+    adb shell pm uninstall -k --user 0 com.android.cts.ctsshim
+    adb shell pm uninstall -k --user 0 com.android.providers.calendar
+    adb shell pm uninstall -k --user 0 com.android.providers.contacts
+    adb shell pm uninstall -k --user 0 com.android.se
+    adb shell pm uninstall -k --user 0 com.google.android.speech.pumpkin
+    adb shell pm uninstall -k --user 0 com.google.android.tts
+    adb shell pm uninstall -k --user 0 com.google.android.videos
+    adb shell pm uninstall -k --user 0 com.google.android.tvrecommendations
+    adb shell pm uninstall -k --user 0 com.google.android.syncadapters.calendar
+    adb shell pm uninstall -k --user 0 com.google.android.backuptransport
+    adb shell pm uninstall -k --user 0 com.google.android.partnersetup
+    adb shell pm uninstall -k --user 0 com.google.android.inputmethod.korean
+    adb shell pm uninstall -k --user 0 com.google.android.inputmethod.pinyin
+    adb shell pm uninstall -k --user 0 com.google.android.apps.inputmethod.zhuyin
+    adb shell pm uninstall -k --user 0 com.google.android.tv
+    adb shell pm uninstall -k --user 0 com.google.android.tv.frameworkpackagestubs
+    adb shell pm uninstall -k --user 0 com.google.android.tv.bugreportsender
+    adb shell pm uninstall -k --user 0 com.google.android.backdrop
+    adb shell pm uninstall -k --user 0 com.google.android.leanbacklauncher.recommendations
+    adb shell pm uninstall -k --user 0 com.google.android.feedback
+    ```
+
+#### Optional to uninstall
+
+This will uninstall the official default launcher, previously *[linkare here]* we had disabled it. 
+Only do this if you have another launcher installed.
+I personally don't recomend this, but if you wish to remove as many google apps, this will do.
+    ```js
+    adb shell pm uninstall -k --user 0 com.google.android.tvlauncher
+    adb shell pm uninstall -k --user 0 com.google.android.leanbacklauncher
+    ```
+
+#### Check for other applications to uninstall
+After you've run the codes above, run this to check if there's other bloatware installed in your OS that you wish to remove.
+If you don't know what any of them are, run it through a LLM (eg. ChatGPT) for a better understanding.
+    ```js
+    adb shell pm list packages
+    ```
+
+---
+
+### Install FOSS (Free and open-source software) applications
+Nearly done.
+Now it's time to replace our favourite applications such as Youtube etc and install some new useful ones.
+A big s/o to all of the developers who _____ to those projects as they _____ us.
+
+- SmartTube to replace Youtube
+- S0undTV to replace Twitch 
+- For *arr* applications, you can follow this guide
+- A VPN
+- A browser
+
+To install an apk from ADB:
+    ```js
+    adb install <pathway_on_desktop>
+    ```
+
+<Tabs className="unique-tabs">
+<TabItem value="SmartTube">
+## SmartTube
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+This will be the replacement for: *Youtube*
+
+### Download
+
+[**Download from GitHub**](https://play.google.com/store/apps/details?id=com.spocky.projengmenu&hl=en)
+
+To find out which architeture is your machine, run
+    ```js
+    adb shell getprop ro.product.cpu.abi
+    ```
+
+### Screenshots
+
+<img src="/img/screenshot-smarttube.jpg" alt="Projectivy SmartTube" style={{ width: '100%', borderRadius: '8px'}}/>
+</div>
+
+<img src="/img/smarttube.png" alt="Smarttube Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+</TabItem>
+
+<TabItem value="S0undTV">
+## S0undTV
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+This will be the replacement for: *Twitch*
+
+### Download
+
+[**Download from GitHub**](https://github.com/S0und/S0undTV)
+
+### Screenshots
+
+<img src="/img/screenshot-s0undtv.jpg" alt="S0undTV Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+</div>
+
+<img src="/img/s0undtv.png" alt="S0undTV Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+</TabItem>
+
+<!--
+<TabItem value="arr" className="italic-tab">
+## Arr
+
+If you wish to [*learn more*](https://example.com) about *arr* applications.
+
+Showcase
+
+  </TabItem>
+-->
+
+<TabItem value="VPN">
+## VPN (Virtual Private Network)
+
+Android TV has the wonderful ability of connecting to a VPN, unlike it's nemesis, the Apple TV.
+This is quite useful for people living abroad having to connect to home countries, having another level of security etc.
+
+Showcase
+  </TabItem>
+<TabItem value="Browser">
+
+## Browser
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+Both have adblockers.
+
+- Puffin ![Paid](https://img.shields.io/badge/Paid-blue)
+- BrowseHere ![Free](https://img.shields.io/badge/Free-blue)
+### Downloads
+
+[**Download Puffin from Google**](https://play.google.com/store/apps/details?id=com.cloudmosa.puffinTV&hl=en) | [**Download BrowseHere from Google**](https://github.com/S0und/S0undTV)
+
+
+### Screenshots
+
+<img src="/img/screenshot-puffin.png" alt="Puffin Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+<img src="/img/screenshot-browsehere.jpg" alt="BrowseHere Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+</div>
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', width: '25%' }}>
+   <div style={{ textAlign: 'center' }}>
+     <img 
+       src="/img/puffin.png" 
+       alt="Puffin Logo" 
+       style={{ width: '100%', borderRadius: '20px' }}
+     />
+     <p style={{ fontSize: '0.70rem' }}>Puffin Browser</p>
+   </div>
+   <div style={{ textAlign: 'center' }}>
+     <img 
+       src="/img/browsehere.png" 
+       alt="BrowseHere Logo" 
+       style={{ width: '100%', borderRadius: '20px' }}
+     />
+     <p style={{ fontSize: '0.70em' }}>BrowseHere Browser</p>
+   </div>
+ </div>
+</div>
+</TabItem>
+
+<TabItem value="Screen-saver">
+
+## Screen-saver (Aerial Views)
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+Body.
+
+### Downloads
+
+[**Download from GitHub**](https://github.com/theothernt/AerialViews) | [**Download from Google Play Store**](https://play.google.com/store/apps/details?id=com.neilturner.aerialviews&hl=en) 
+
+### Screenshots
+
+<img src="/img/screenshot-AerialViews.png" alt="Aerial Views Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+</div>
+
+<img src="/img/AerialViews.png" alt="AerialViews Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+  </TabItem>
+
+<TabItem value="Airplay">
+
+## Airplay (AirScreen)
+<div style={{ display: 'flex', gap: '2rem', alignItems: 'flex-start' }}>
+<div style={{ flex: 1 }}>
+Body.
+
+### Downloads
+
+[**Download AirScreen from Google**](https://play.google.com/store/apps/details?id=com.ionitech.airscreen&hl=it)
+
+### Screenshots
+
+<img src="/img/screenshot-airscreen.jpg" alt="Arial Views Screenshot" style={{ width: '100%', borderRadius: '8px'}}/>
+</div>
+
+<img src="/img/airscreen.png" alt="Are Views Logo" style={{ width: '25%', borderRadius: '20px'}} />
+
+</div>
+  </TabItem>
+</Tabs>
+
+---
+
+### Reduce telemetry
+On PlayStore, disable Play Protect
+
+
+Aggiungere airplay application
+Arial Views
+iptv tivimate
+https://github.com/Free-TV/IPTV/tree/master
+
